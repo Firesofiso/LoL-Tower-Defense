@@ -28,6 +28,7 @@
 #include <vector>
 #include <deque>
 #include <iostream>
+#include <math.h>
 
 using namespace sf;
 using namespace std;
@@ -35,7 +36,7 @@ using namespace std;
 //classes
 class minion {
 public:
-    int range, moveSpd;
+    float range, moveSpd;
     float atkSpd, health, maxHP;
     Sprite sprite;
 	bool spawned;
@@ -49,8 +50,9 @@ public:
     //skill
     //price
     //upgrades
-	int range;
+	float range;
     Sprite icon;
+	CircleShape rangeArea;
 	bool clicked;
 	champion();
 	champion(string a);
@@ -279,17 +281,18 @@ int main(int argc, char const** argv)
 							champion_selected != false) {
 								for (int j = 0; j < champPool.size(); j++) {
 									if (champPool[j].clicked == true) {
-										champPool[j].icon.setPosition(champSpots[i].getPosition().x, champSpots[i].getPosition().y);
+										champPool[j].icon.setPosition(champSpots[i].getPosition().x + 30, champSpots[i].getPosition().y + 30);
+										champPool[j].rangeArea.setPosition(champSpots[i].getPosition().x + 30, champSpots[i].getPosition().y + 30);
 									}
 								}
 					}
 				}
 				if  (event.type == Event::MouseButtonReleased && 
 					event.mouseButton.button == Mouse::Left &&
-					Mouse::getPosition(window).x >= champPool[i].icon.getPosition().x - 60 &&
-					Mouse::getPosition(window).y >= champPool[i].icon.getPosition().y - 60 &&
-					Mouse::getPosition(window).x <= champPool[i].icon.getPosition().x + 60 &&
-					Mouse::getPosition(window).y <= champPool[i].icon.getPosition().y + 60  &&
+					Mouse::getPosition(window).x >= champPool[i].icon.getPosition().x - 30 &&
+					Mouse::getPosition(window).y >= champPool[i].icon.getPosition().y - 30 &&
+					Mouse::getPosition(window).x <= champPool[i].icon.getPosition().x + 30 &&
+					Mouse::getPosition(window).y <= champPool[i].icon.getPosition().y + 30  &&
 					champion_selected != false) {
 						champPool[i].clicked = false;
 						champion_selected = false;
@@ -311,19 +314,50 @@ int main(int argc, char const** argv)
         window.draw(purpleT);
         window.draw(startWave);
 
+		
+		
+		//FPS control
+		wait(.0166666666667);
+
 		//draw Champions
 		for (int i = 0; i < champPool.size(); i++) {
 			//allows you to pick up champions
 				if (champPool[i].clicked == true) {
-					champPool[i].icon.setOrigin((champPool[i].icon.getPosition().x - Mouse::getPosition(window).x), (champPool[i].icon.getPosition().y - Mouse::getPosition(window).y));
+					//champPool[i].icon.setOrigin((champPool[i].icon.getPosition().x - Mouse::getPosition(window).x), (champPool[i].icon.getPosition().y - Mouse::getPosition(window).y));
 					champPool[i].icon.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
+					champPool[i].rangeArea.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
+					
+				}
+				/*
+				//need to check if the minions have entered the range of the current champion.
+				for (int j = 0; j < minionPool.size(); j++) {
+					if (minionPool[i].spawned == true) {
+						//heres the problem
+						if (((minionPool[j].sprite.getPosition().x - champPool[i].range)*(minionPool[j].sprite.getPosition().x - champPool[i].range) + (minionPool[j].sprite.getPosition().y - 64 - champPool[i].range)*(minionPool[j].sprite.getPosition().y - 64 - champPool[i].range)) < champPool[i].range^2) {
+						minionPool[j].sprite.setScale(2, 2);
+					}
+					
+					minionPool[i].sprite.move(-.7, 0);
+					if (minionPool[i].sprite.getPosition().x <= 140) {
+						minionPool.pop_front();
+					}
+					//draw the sprite only if there is a minion to draw
+					if (minionPool.size() > 0) {
+						window.draw(minionPool[i].sprite);
+					}
+				}
+				}
+				*/
+
+
+				if (Mouse::getPosition(window).x >= champPool[i].icon.getPosition().x - 30 &&
+					Mouse::getPosition(window).y >= champPool[i].icon.getPosition().y - 30 &&
+					Mouse::getPosition(window).x <= champPool[i].icon.getPosition().x + 30 &&
+					Mouse::getPosition(window).y <= champPool[i].icon.getPosition().y + 30) {
+						window.draw(champPool[i].rangeArea);
 				}
 				window.draw(champPool[i].icon);
 		}
-
-		//FPS control
-		wait(.0166666666667);
-
 		//drawing the minions
 		for (int i = 0; i < minionPool.size(); i++) {
 
@@ -335,12 +369,13 @@ int main(int argc, char const** argv)
 					if (minionPool[i].sprite.getPosition().x <= 140) {
 						minionPool.pop_front();
 					}
+					//draw the sprite only if there is a minion to draw
+					if (minionPool.size() > 0) {
+						window.draw(minionPool[i].sprite);
+					}
 				}
 				
-				//draw the sprite only if there is a minion to draw
-				if (minionPool.size() > 0) {
-					window.draw(minionPool[i].sprite);
-				}
+				
 			}
 		}
 
@@ -403,6 +438,10 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(60, 60);
+		this->range = 100;
+		this->rangeArea.setOrigin(range, range);
+		this->rangeArea.setRadius(range);
+		this->rangeArea.setPosition(60, 60);
 	}
 	if (a == "Nasus" || a == "nasus") {
 		this->clicked = false;
@@ -410,6 +449,10 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(120, 60);
+		this->range = 70;
+		this->rangeArea.setOrigin(70, 70);
+		this->rangeArea.setRadius(range);
+		this->rangeArea.setPosition(120, 60);
 	}
 	if (a == "Taric" || a == "taric") {
 		this->clicked = false;
@@ -417,6 +460,10 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(180, 60);
+		this->range = 70;
+		this->rangeArea.setOrigin(70, 70);
+		this->rangeArea.setRadius(range);
+		this->rangeArea.setPosition(180, 60);
 	}
 
 }

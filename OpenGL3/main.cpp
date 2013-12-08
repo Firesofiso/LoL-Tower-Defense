@@ -29,6 +29,7 @@
 #include <deque>
 #include <iostream>
 #include <math.h>
+#include <cmath>
 
 using namespace sf;
 using namespace std;
@@ -89,6 +90,7 @@ bool champion_selected = false;
 void wait(float seconds);
 void wave1();
 void placeSpots(int posX, int posY, int spotN);
+bool checkIntersects(CircleShape &rangeArea, Sprite &minion);
 
 int main(int argc, char const** argv)
 {
@@ -328,26 +330,14 @@ int main(int argc, char const** argv)
 					champPool[i].rangeArea.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
 					
 				}
-				/*
+
 				//need to check if the minions have entered the range of the current champion.
 				for (int j = 0; j < minionPool.size(); j++) {
-					if (minionPool[i].spawned == true) {
-						//heres the problem
-						if (((minionPool[j].sprite.getPosition().x - champPool[i].range)*(minionPool[j].sprite.getPosition().x - champPool[i].range) + (minionPool[j].sprite.getPosition().y - 64 - champPool[i].range)*(minionPool[j].sprite.getPosition().y - 64 - champPool[i].range)) < champPool[i].range^2) {
+					if (checkIntersects(champPool[0].rangeArea, minionPool[j].sprite)) {
 						minionPool[j].sprite.setScale(2, 2);
 					}
-					
-					minionPool[i].sprite.move(-.7, 0);
-					if (minionPool[i].sprite.getPosition().x <= 140) {
-						minionPool.pop_front();
-					}
-					//draw the sprite only if there is a minion to draw
-					if (minionPool.size() > 0) {
-						window.draw(minionPool[i].sprite);
-					}
+
 				}
-				}
-				*/
 
 
 				if (Mouse::getPosition(window).x >= champPool[i].icon.getPosition().x - 30 &&
@@ -365,7 +355,7 @@ int main(int argc, char const** argv)
 			if (minionPool.size() > 0) {
 				//moves the minions if they have spawned (spawned by pressing a button)
 				if (minionPool[i].spawned == true) {
-					minionPool[i].sprite.move(-.7, 0);
+					minionPool[i].sprite.move(-.5, 0);
 					if (minionPool[i].sprite.getPosition().x <= 140) {
 						minionPool.pop_front();
 					}
@@ -468,23 +458,7 @@ champion::champion(string a) {
 
 }
 
-//void startMinions() {
-//    for (int i = 0; i < minionPool.size(); i++) {
-//        wait(.005);
-//        minionPool[i].sprite.move(-1, 0);
-//        if (minionPool[i].sprite.getPosition().x == 140) {
-//            minionPool[i].sprite.setPosition(850, 300);
-//        }
-//       
-//        if (minionPool[i].sprite.getPosition().x == 800 && minionPool.size() < 3) {
-//            minionPool.push_back(minion("Purple", "Melee"));
-//        } else if (minionPool[i].sprite.getPosition().x == 800 && minionPool.size() < 6) {
-//            minionPool.push_back(minion("Purple", "Ranged"));
-//        }
-//        
-//    }
-//}
-
+//clock stuff - makes the game run smoothly
 void wait (float seconds)
 {
     clock_t endwait;
@@ -495,6 +469,7 @@ void wait (float seconds)
     }
 }
 
+//I don't know yet, supposed to create the minion wave
 void wave1() {
 	minionPool.push_back(minion("Purple", "Melee"));
 	minionPool.push_back(minion("Purple", "Melee"));
@@ -504,9 +479,32 @@ void wave1() {
 	minionPool.push_back(minion("Purple", "Ranged"));
 }
 
+//Places the champion spots on the map
 void placeSpots(int posX, int posY, int spotN) {
 	if (spotN < 9) {
 		champSpots[spotN].setPosition(posX, posY);
 		placeSpots(posX+60, posY, spotN+1);
 	}
+}
+
+
+//this function checks if the minion is inside the champions range.  (right now it only tracks 0,0 of the minion, it needs to also track 0,36 - 36,0 - 36,36)
+bool checkIntersects(CircleShape &rangeArea, Sprite &minion) {
+
+	int radius = rangeArea.getRadius();
+
+	//the distance between the circles origin and the minions (in position x and position y)
+	Vector2f circleDistance;
+	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x);
+    circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	
+	//cout << circleDistance.x;
+	//cout << " " << circleDistance.y << endl;
+	
+	//this is the distance between the origins (actual)
+	float dist = sqrt(pow(circleDistance.x, 2.0) + pow(circleDistance.y, 2.0));
+	
+	//cout << dist << endl;
+    
+	return (dist <= (radius));
 }

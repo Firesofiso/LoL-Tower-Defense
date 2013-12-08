@@ -40,6 +40,7 @@ public:
     float range, moveSpd;
     float atkSpd, health, maxHP;
     Sprite sprite;
+	RectangleShape healthbar, life;
 	bool spawned;
     //functions
     minion();
@@ -365,12 +366,18 @@ int main(int argc, char const** argv)
 				//moves the minions if they have spawned (spawned by pressing a button)
 				if (minionPool[i].spawned == true) {
 					minionPool[i].sprite.move(-.5, 0);
+					minionPool[i].healthbar.move(-.5, 0);
+					minionPool[i].life.move(-.5, 0);
 					if (minionPool[i].sprite.getPosition().x <= 140) {
 						minionPool.pop_front();
 					}
 					//draw the sprite only if there is a minion to draw
 					if (minionPool.size() > 0) {
+
 						window.draw(minionPool[i].sprite);
+						window.draw(minionPool[i].healthbar);
+						minionPool[i].life.setSize(Vector2f (36*(minionPool[i].health/minionPool[i].maxHP), 8));
+						window.draw(minionPool[i].life);
 					}
 				}
 				
@@ -409,6 +416,7 @@ minion::minion(string a, string b) {
     if (a == "Purple") {
         if (b == "Melee") {
             this->health = 400;
+			this->maxHP = 400;
             this->atkSpd = .8;
             this->moveSpd = .7;
             this->range = 25;
@@ -416,6 +424,12 @@ minion::minion(string a, string b) {
             this->sprite.setScale(.3, .3);
             this->sprite.setOrigin(0,64);
             this->sprite.setPosition(864, 300);
+			this->healthbar.setSize(Vector2f(36, 8));
+			this->healthbar.setFillColor(Color::Black);
+			this->healthbar.setPosition(864, 336);
+			this->life.setSize(Vector2f(36, 8));
+			this->life.setFillColor(Color::Red);
+			this->life.setPosition(864, 336);
         } else if (b == "Ranged") {
             this->health = 280;
 			this->atkSpd = .8;
@@ -437,7 +451,7 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(60, 60);
-		this->dmg = .1;
+		this->dmg = 1;
 		this->range = 100;
 		this->rangeArea.setOrigin(range, range);
 		this->rangeArea.setRadius(range);
@@ -461,6 +475,7 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(180, 60);
+		this->dmg = .3;
 		this->range = 70;
 		this->rangeArea.setOrigin(70, 70);
 		this->rangeArea.setRadius(range);

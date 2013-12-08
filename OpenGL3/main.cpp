@@ -51,10 +51,11 @@ public:
     //skill
     //price
     //upgrades
-	float range;
+	float range, dmg;
     Sprite icon;
 	CircleShape rangeArea;
 	bool clicked;
+	bool target;
 	champion();
 	champion(string a);
 };
@@ -90,7 +91,8 @@ bool champion_selected = false;
 void wait(float seconds);
 void wave1();
 void placeSpots(int posX, int posY, int spotN);
-bool checkIntersects(CircleShape &rangeArea, Sprite &minion);
+bool checkLIntersects(CircleShape &rangeArea, Sprite &minion);
+bool checkRIntersects(CircleShape &rangeArea, Sprite &minion);
 
 int main(int argc, char const** argv)
 {
@@ -333,9 +335,16 @@ int main(int argc, char const** argv)
 
 				//need to check if the minions have entered the range of the current champion.
 				for (int j = 0; j < minionPool.size(); j++) {
-					if (checkIntersects(champPool[0].rangeArea, minionPool[j].sprite)) {
-						minionPool[j].sprite.setScale(2, 2);
+					if (minionPool.size() > 0){
+						if (checkLIntersects(champPool[i].rangeArea, minionPool[j].sprite) ||
+							checkRIntersects(champPool[i].rangeArea, minionPool[j].sprite)) {
+								minionPool[j].health -= champPool[i].dmg;
+								if (minionPool[j].health <= 0) {
+									minionPool.erase(minionPool.begin());
+								}
+						}
 					}
+
 
 				}
 
@@ -428,6 +437,7 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(60, 60);
+		this->dmg = .1;
 		this->range = 100;
 		this->rangeArea.setOrigin(range, range);
 		this->rangeArea.setRadius(range);
@@ -439,6 +449,7 @@ champion::champion(string a) {
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(120, 60);
+		this->dmg = .3;
 		this->range = 70;
 		this->rangeArea.setOrigin(70, 70);
 		this->rangeArea.setRadius(range);
@@ -489,13 +500,32 @@ void placeSpots(int posX, int posY, int spotN) {
 
 
 //this function checks if the minion is inside the champions range.  (right now it only tracks 0,0 of the minion, it needs to also track 0,36 - 36,0 - 36,36)
-bool checkIntersects(CircleShape &rangeArea, Sprite &minion) {
+bool checkLIntersects(CircleShape &rangeArea, Sprite &minion) {
 
 	int radius = rangeArea.getRadius();
 
 	//the distance between the circles origin and the minions (in position x and position y)
 	Vector2f circleDistance;
 	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x);
+    circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	
+	//cout << circleDistance.x;
+	//cout << " " << circleDistance.y << endl;
+	
+	//this is the distance between the origins (actual)
+	float dist = sqrt(pow(circleDistance.x, 2.0) + pow(circleDistance.y, 2.0));
+	
+	//cout << dist << endl;
+    
+	return (dist <= (radius));
+}
+bool checkRIntersects(CircleShape &rangeArea, Sprite &minion) {
+
+	int radius = rangeArea.getRadius();
+
+	//the distance between the circles origin and the minions (in position x and position y)
+	Vector2f circleDistance;
+	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x - 36);
     circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
 	
 	//cout << circleDistance.x;

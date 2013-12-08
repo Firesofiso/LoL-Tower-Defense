@@ -1,48 +1,47 @@
-﻿Build started 12/7/2013 6:03:08 PM.
+﻿Build started 12/7/2013 8:21:56 PM.
      1>Project "C:\Users\TARDIS\documents\visual studio 2012\Projects\OpenGL3\OpenGL3\OpenGL3.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\SFML\SFML-2.1\include" /I"C:\Users\TARDIS\Downloads\glew-1.10.0-win32\glew-1.10.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(249): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(284): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(294): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274) : definition of 'i' ignored
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264) : definition of 'i' used
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(295): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274) : definition of 'i' ignored
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264) : definition of 'i' used
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(251): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(286): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(296): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274) : definition of 'i' ignored
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264) : definition of 'i' used
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276) : definition of 'i' ignored
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266) : definition of 'i' used
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(297): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274) : definition of 'i' ignored
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264) : definition of 'i' used
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276) : definition of 'i' ignored
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266) : definition of 'i' used
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(298): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276) : definition of 'i' ignored
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266) : definition of 'i' used
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(299): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(274) : definition of 'i' ignored
-                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(264) : definition of 'i' used
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(322): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(325): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(329): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(330): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(335): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(352): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(380): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(403): warning C4305: '=' : truncation from 'double' to 'float'
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(404): warning C4305: '=' : truncation from 'double' to 'float'
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(407): warning C4305: 'argument' : truncation from 'double' to 'float'
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276) : definition of 'i' ignored
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266) : definition of 'i' used
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(301): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(276) : definition of 'i' ignored
+                 c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(266) : definition of 'i' used
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(324): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(327): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(331): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(332): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(337): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(361): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(389): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(412): warning C4305: '=' : truncation from 'double' to 'float'
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(413): warning C4305: '=' : truncation from 'double' to 'float'
      1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(416): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(481): warning C4244: '=' : conversion from 'float' to 'clock_t', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(499): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(506): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(508): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(509): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(517): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(518): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(520): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(421): warning C4305: '=' : truncation from 'double' to 'float'
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(422): warning C4305: '=' : truncation from 'double' to 'float'
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(425): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(440): warning C4305: '=' : truncation from 'double' to 'float'
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(475): warning C4244: '=' : conversion from 'float' to 'clock_t', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(495): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(504): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(515): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(523): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\tardis\documents\visual studio 2012\projects\opengl3\opengl3\main.cpp(534): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\TARDIS\documents\visual studio 2012\Projects\OpenGL3\Debug\OpenGL.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML\SFML-2.1\lib" "sfml-network-d.lib" "sfml-audio-d.lib" "sfml-main-d.lib" "sfml-graphics-d.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\TARDIS\documents\visual studio 2012\Projects\OpenGL3\Debug\OpenGL.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\TARDIS\documents\visual studio 2012\Projects\OpenGL3\Debug\OpenGL.lib" /MACHINE:X86 Debug\main.obj
          OpenGL3.vcxproj -> C:\Users\TARDIS\documents\visual studio 2012\Projects\OpenGL3\Debug\OpenGL.exe
@@ -50,4 +49,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.08
+Time Elapsed 00:00:01.05

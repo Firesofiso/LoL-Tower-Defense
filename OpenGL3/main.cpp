@@ -31,6 +31,8 @@
 #include <math.h>
 #include <cmath>
 
+#define PI 3.14159265
+
 using namespace sf;
 using namespace std;
 
@@ -52,11 +54,11 @@ public:
     //skill
     //price
     //upgrades
-	float range, dmg;
-    Sprite icon;
+	int delayCounter;
+	float range, atkspd, dmg;
+    Sprite icon, a_part;
 	CircleShape rangeArea;
-	bool clicked;
-	bool target;
+	bool clicked, target, placed;
 	champion();
 	champion(string a);
 };
@@ -82,6 +84,7 @@ Texture purpleR;
 
 //champions
 Texture ashe;
+Texture ashe_particle;
 Texture nasus;
 Texture taric;
 
@@ -92,8 +95,9 @@ bool champion_selected = false;
 void wait(float seconds);
 void wave1();
 void placeSpots(int posX, int posY, int spotN);
-bool checkLIntersects(CircleShape &rangeArea, Sprite &minion);
-bool checkRIntersects(CircleShape &rangeArea, Sprite &minion);
+bool checkIntersects(CircleShape &rangeArea, Sprite &minion, string a);
+float calculateAngle(CircleShape &rangeArea, Sprite &minion);
+Vector2f getChampMinionDist(CircleShape &rangeArea, Sprite &minion);
 
 int main(int argc, char const** argv)
 {
@@ -115,12 +119,17 @@ int main(int argc, char const** argv)
 	if (!ashe.loadFromFile("ashe.png")) {
 		return EXIT_FAILURE;
 	}
+	if (!ashe_particle.loadFromFile("ashe_p.png")) {
+		return EXIT_FAILURE;
+	}
+
 	if (!nasus.loadFromFile("nasus.png")) {
 		return EXIT_FAILURE;
 	}
 	if (!taric.loadFromFile("taric.png")) {
 		return EXIT_FAILURE;
 	}
+
 
     // Set the Icon
     sf::Image icon;
@@ -221,6 +230,8 @@ int main(int argc, char const** argv)
 	c_spot.setTexture(spot);
 	c_spot.setScale(.5, .5);
 
+	//this integer is for keeping the champions 
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -252,6 +263,7 @@ int main(int argc, char const** argv)
 				for (int i = 0; i < minionPool.size(); i++) {
 					minionPool[i].spawned = true;
 				}
+
             }
 			if (event.type == Event::MouseButtonReleased && 
 				event.mouseButton.button == Mouse::Left &&
@@ -288,6 +300,8 @@ int main(int argc, char const** argv)
 									if (champPool[j].clicked == true) {
 										champPool[j].icon.setPosition(champSpots[i].getPosition().x + 30, champSpots[i].getPosition().y + 30);
 										champPool[j].rangeArea.setPosition(champSpots[i].getPosition().x + 30, champSpots[i].getPosition().y + 30);
+										champPool[j].a_part.setPosition(champSpots[i].getPosition().x + 30, champSpots[i].getPosition().y + 30);
+										champPool[j].placed = true;
 									}
 								}
 					}
@@ -331,23 +345,11 @@ int main(int argc, char const** argv)
 					//champPool[i].icon.setOrigin((champPool[i].icon.getPosition().x - Mouse::getPosition(window).x), (champPool[i].icon.getPosition().y - Mouse::getPosition(window).y));
 					champPool[i].icon.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
 					champPool[i].rangeArea.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
+					champPool[i].a_part.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
 					
 				}
 
-				//need to check if the minions have entered the range of the current champion.
-				for (int j = 0; j < minionPool.size(); j++) {
-					if (minionPool.size() > 0){
-						if (checkLIntersects(champPool[i].rangeArea, minionPool[j].sprite) ||
-							checkRIntersects(champPool[i].rangeArea, minionPool[j].sprite)) {
-								minionPool[j].health -= champPool[i].dmg;
-								if (minionPool[j].health <= 0) {
-									minionPool.erase(minionPool.begin());
-								}
-						}
-					}
-
-
-				}
+				
 
 
 				if (Mouse::getPosition(window).x >= champPool[i].icon.getPosition().x - 30 &&
@@ -357,6 +359,62 @@ int main(int argc, char const** argv)
 						window.draw(champPool[i].rangeArea);
 				}
 				window.draw(champPool[i].icon);
+				
+				
+				for (int j = 0; j < minionPool.size(); j++) {
+					if (minionPool.size() > 0){
+						//need to check if the minions have entered the range of the current champion.
+						if (checkIntersects(champPool[i].rangeArea, minionPool[j].sprite, "topR") ||
+							checkIntersects(champPool[i].rangeArea, minionPool[j].sprite, "topL")) {
+								
+								//minion targeted
+								champPool[i].target = true;
+
+								//only attack if the champion is placed
+								if (champPool[i].placed == true) {
+									champPool[i].delayCounter++;
+									
+									cout << "(";
+										cout << champPool[i].a_part.getGlobalBounds().width; 
+										cout << ","; 
+										cout << champPool[i].a_part.getGlobalBounds().height;
+										cout << ")" << endl;
+										cout << " Minion: (" << minionPool[j].sprite.getPosition().x << "," << minionPool[j].sprite.getPosition().y - 16 << ")" << endl;
+
+									//change the angle of the bullet and move it
+									if (minionPool[j].sprite.getPosition().x > champPool[i].icon.getPosition().x) {
+										champPool[i].a_part.setRotation(360 - calculateAngle(champPool[i].rangeArea, minionPool[j].sprite));
+										champPool[i].a_part.move(getChampMinionDist(champPool[i].rangeArea, minionPool[j].sprite).x/50, getChampMinionDist(champPool[i].rangeArea, minionPool[j].sprite).y/50);
+									}	else {
+											champPool[i].a_part.setRotation(calculateAngle(champPool[i].rangeArea, minionPool[j].sprite));
+											champPool[i].a_part.move(-getChampMinionDist(champPool[i].rangeArea, minionPool[j].sprite).x/50, getChampMinionDist(champPool[i].rangeArea, minionPool[j].sprite).y/50);
+									}
+
+									if (champPool[i].delayCounter >= (2-champPool[i].atkspd)*60) {
+										champPool[i].delayCounter = 0;
+										
+										if (champPool[i].a_part.getPosition().x + champPool[i].a_part.getGlobalBounds().width > minionPool[j].sprite.getPosition().x && 
+											champPool[i].a_part.getPosition().y + champPool[i].a_part.getGlobalBounds().height > minionPool[j].sprite.getPosition().y - 16) {
+											minionPool[j].health -= champPool[i].dmg;
+											champPool[i].a_part.setPosition(champPool[i].icon.getPosition());
+											if (minionPool[j].health <= 0) {
+												minionPool.erase(minionPool.begin());
+											}
+										}
+									}
+								}
+						}
+						if (!checkIntersects(champPool[i].rangeArea, minionPool[j].sprite, "topR") &&
+							!checkIntersects(champPool[i].rangeArea, minionPool[j].sprite, "topL")) {
+								champPool[i].target = false;
+						}
+					}
+
+
+				}
+				if (champPool[i].target == true) {
+					window.draw(champPool[i].a_part);
+				}
 		}
 		//drawing the minions
 		for (int i = 0; i < minionPool.size(); i++) {
@@ -417,9 +475,6 @@ minion::minion(string a, string b) {
         if (b == "Melee") {
             this->health = 400;
 			this->maxHP = 400;
-            this->atkSpd = .8;
-            this->moveSpd = .7;
-            this->range = 25;
             this->sprite.setTexture(purpleM);
             this->sprite.setScale(.3, .3);
             this->sprite.setOrigin(0,64);
@@ -432,9 +487,6 @@ minion::minion(string a, string b) {
 			this->life.setPosition(864, 336);
         } else if (b == "Ranged") {
             this->health = 280;
-			this->atkSpd = .8;
-            this->moveSpd = .7;
-            this->range = 50;
             this->sprite.setTexture(purpleR);
             this->sprite.setScale(.3, .3);
             this->sprite.setOrigin(0,64);
@@ -447,11 +499,16 @@ minion::minion(string a, string b) {
 champion::champion(string a) {
 	if (a == "Ashe" || a == "ashe") {
 		this->clicked = false;
+		this->target = false;
+		this->delayCounter = 0;
 		this->icon.setTexture(ashe);
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(60, 60);
-		this->dmg = 1;
+		this->a_part.setTexture(ashe_particle);
+		this->a_part.setOrigin(5,0);
+		this->atkspd = 0.658;
+		this->dmg = 46.3;
 		this->range = 100;
 		this->rangeArea.setOrigin(range, range);
 		this->rangeArea.setRadius(range);
@@ -459,11 +516,13 @@ champion::champion(string a) {
 	}
 	if (a == "Nasus" || a == "nasus") {
 		this->clicked = false;
+		this->delayCounter = 0;
 		this->icon.setTexture(nasus);
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
 		this->icon.setPosition(120, 60);
-		this->dmg = .3;
+		this->atkspd = 0.638;
+		this->dmg = 53.3;
 		this->range = 70;
 		this->rangeArea.setOrigin(70, 70);
 		this->rangeArea.setRadius(range);
@@ -471,6 +530,7 @@ champion::champion(string a) {
 	}
 	if (a == "Taric" || a == "taric") {
 		this->clicked = false;
+		this->delayCounter = 0;
 		this->icon.setTexture(taric);
 		this->icon.setScale(.5, .5);
 		this->icon.setOrigin(60, 60);
@@ -515,14 +575,19 @@ void placeSpots(int posX, int posY, int spotN) {
 
 
 //this function checks if the minion is inside the champions range.  (right now it only tracks 0,0 of the minion, it needs to also track 0,36 - 36,0 - 36,36)
-bool checkLIntersects(CircleShape &rangeArea, Sprite &minion) {
+bool checkIntersects(CircleShape &rangeArea, Sprite &minion, string a) {
 
 	int radius = rangeArea.getRadius();
 
 	//the distance between the circles origin and the minions (in position x and position y)
 	Vector2f circleDistance;
-	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x);
-    circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	if (a == "topL") {
+		circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x);
+		circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	} else if (a == "topR") {
+		circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x - 36);
+		circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	}
 	
 	//cout << circleDistance.x;
 	//cout << " " << circleDistance.y << endl;
@@ -534,22 +599,18 @@ bool checkLIntersects(CircleShape &rangeArea, Sprite &minion) {
     
 	return (dist <= (radius));
 }
-bool checkRIntersects(CircleShape &rangeArea, Sprite &minion) {
 
-	int radius = rangeArea.getRadius();
-
-	//the distance between the circles origin and the minions (in position x and position y)
+float calculateAngle(CircleShape &rangeArea, Sprite &minion) {
 	Vector2f circleDistance;
-	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x - 36);
+	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x - 18);
     circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
-	
-	//cout << circleDistance.x;
-	//cout << " " << circleDistance.y << endl;
-	
-	//this is the distance between the origins (actual)
-	float dist = sqrt(pow(circleDistance.x, 2.0) + pow(circleDistance.y, 2.0));
-	
-	//cout << dist << endl;
-    
-	return (dist <= (radius));
+
+	return atan(circleDistance.x/circleDistance.y) * 180/PI;
+}
+
+Vector2f getChampMinionDist(CircleShape &rangeArea, Sprite &minion) {
+	Vector2f circleDistance;
+	circleDistance.x = abs(rangeArea.getPosition().x - minion.getPosition().x - 18);
+    circleDistance.y = abs(rangeArea.getPosition().y - minion.getPosition().y + 18);
+	return circleDistance;
 }
